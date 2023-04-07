@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from dotenv import load_dotenv, find_dotenv
 
+import os
+load_dotenv()
 app = FastAPI()
+
 
 class Msg(BaseModel):
     msg: str
@@ -9,7 +13,8 @@ class Msg(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World. Welcome to FastAPI!"}
+    print("CWD is", os.getcwd())
+    return {"message": f"Hello World. Welcome to FastAPI! - {os.getenv('MY_VAR')}"}
 
 
 @app.get("/path")
@@ -25,3 +30,5 @@ async def demo_post(inp: Msg):
 @app.get("/path/{path_id}")
 async def demo_get_path_id(path_id: int):
     return {"message": f"This is /path/{path_id} endpoint, use post request to retrieve result"}
+
+
